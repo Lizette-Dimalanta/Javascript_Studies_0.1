@@ -35,7 +35,7 @@ const jokes = []
 getJoke(joke => { // callback
     jokes.push(joke)
     console.log(jokes)
-    getJoke(joke => { // callback
+    getJoke(joke => { // callback hell
         jokes.push(joke)
         console.log(jokes)
     })
