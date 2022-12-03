@@ -1,5 +1,8 @@
 # Javascript Aync and Callbacks
 
+## NOTES
+
+- Make code as flat as possible (less nesting, the better)
 
 ## Asynchronous
 
@@ -55,3 +58,30 @@ getJoke(joke => { // callback
     })
 })
 ```
+
+---
+
+## PART 2: JS Promises and Fetch API
+
+## PROMISES
+
+- An object that wraps/encapulates asynchronous code.
+- Promises it'll run the code asynchronously/and will return a result at some point.
+
+### 3 Promise States:
+
+1. Starts in `pending` state.
+   - Promise starts executing the promise.
+
+Two possible results:
+
+2. `.then(onFulfilled)`: Fufilled
+    - Completes successfully
+    - Promise changes state to be `fufilled`.
+
+3. `.catch(onError)`: Rejected
+    - Fails in execution:
+      - Network outage
+      - Request timeout
+
+We define what happens in either of these cases by linting a callback function to the promise through the `.then()` method (fufillment callback), or the `.catch()` method (rejection callback).

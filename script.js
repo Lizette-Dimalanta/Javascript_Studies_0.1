@@ -1,5 +1,8 @@
 // CALLBACKS
 
+// NOTES:
+// - Make code as flat as possible (less nesting the better)
+
 // Asynchronous
 // function adder(x, y, callback) { // `callback/result` are placeholder names.
 //     setTimeout(() => callback(x + y), 3000) // <- Add delay (3 secs)
@@ -30,6 +33,7 @@ function getJoke(cb) {
 
 // console.log('Waiting for joke...')
 
+// CALLBACK HELL
 const jokes = []
 
 getJoke(joke => { // callback
@@ -40,3 +44,11 @@ getJoke(joke => { // callback
         console.log(jokes)
     })
 })
+
+// ------------------------------------- PART 2 -----------------------------------------
+
+// turn into...
+
+// PROMISES
+// An object that wraps/encapulates asynchronous code
+// Promises it'll run the code asynchronously/and will return a result at some point.
