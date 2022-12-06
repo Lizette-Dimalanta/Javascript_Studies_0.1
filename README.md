@@ -1,8 +1,42 @@
-# Javascript Aync, Callbacks and Promises
+# Javascript Async, Callbacks and Promises
 
-## NOTES
+## Table of Contents
+
+### PART 1: Javascript Async and Callbacks
+
+1. [General Notes](#general-notes)
+2. [Asynchronous Example](#asynchronous-example)
+3. [Configuring an Asynchronous Request](#configuring-an-asynchronous-request)
+4. [Inserting into HTML](#inserting-into-html)
+5. [⚠︎ Callback Hell](#callback-hell-⚠︎)
+
+### PART 2: Javascript Promises and Fetch API
+
+6. [Promises](#promises)
+   - [3 Promise States](#3-promise-states)
+7. [Code Examples](#code-examples)
+
+General:
+
+8. [Operands](#operands)
+9.  [Adder Function](#adder-function)
+10. [`setTimeout`](#setTimeout)
+11. [Factory Function](#factory-function)
+    - [Attaching to Factory Function](#attaching-to-factory-function-then-and-catch)
+12. [⚠︎ Promise Hell](#promise-hell-⚠︎)
+    - [Solution](#solution)
+13. [Refactoring `script.js` to use Promises](#refactoring-scriptjs-to-use-promises-part-2-of-lesson-1)
+    - [Logging a single joke](#logging-a-single-joke)
+    - [Logging multiple jokes](#logging-multiple-jokes)
+14. [REFINED: Refactoring `script.js`](#refactoring-scriptjs-refined)
+    - [D-R-Y Equivalent](#equivalent-d-r-y)
+15. [Fetch API](#fetch-api)
+    - [Refactoring `function getJoke()` using Fetch API](#refactoring-function-getjoke-using-fetch-api)
+
+## General Notes
 
 - Make code as flat as possible (less nesting, the better)
+- `def` : Websocket -> VS Live Server
 
 ### Asynchronous Example
 
@@ -18,9 +52,9 @@ adder(15, 20, result => alert(result)) // callback
 console.log('Hello')
 ```
 
-## Postman Equivalent (JS)
+## Configuring an Asynchronous Request
 
-### Configuring an Asynchronous Request:
+aka. Postman Equivalent (JS)
 
 ```javascript
 function getJoke(cb) {
@@ -32,8 +66,6 @@ function getJoke(cb) {
     req.send() // Sends request (Asynchronous)
 }
 ```
-
-`def` : Websocket -> VS Live Server
 
 ## Inserting into HTML
 
@@ -73,7 +105,7 @@ It is essentially a chain of callbacks but...
 - It is a more sophisticated structure
 - Allows asynchronousy
 
-### 3 Promise States:
+### 3 Promise States
 
 1. Starts in `pending` state.
    - Promise starts executing the promise.
@@ -145,7 +177,7 @@ function adderPromise(x, y) { // Factory function
 }
 ```
 
-## Attaching to factory function (`.then` and `.catch`)
+## Attaching to Factory Function (`.then` and `.catch`)
 
 Attaches callback to the factory function -> logs result *OR* catches error.
 
@@ -189,7 +221,7 @@ adderPromise(10, 20)
     .catch(error)
 ```
 
-### Solution:
+### Solution
 
 ```javascript
 adderPromise(10, 20)
@@ -216,7 +248,7 @@ function getJoke() {
 const jokes = []
 ```
 
-### Logging a single joke:
+### Logging a single joke
 
 ```javascript
 getJoke().then(joke => console.log(jokes))
@@ -224,7 +256,7 @@ getJoke().then(joke => console.log(jokes))
 
 ```
 
-### Logging multiple jokes:
+### Logging multiple jokes
 
 Creating a callback:
 
