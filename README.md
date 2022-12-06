@@ -4,7 +4,7 @@
 
 - Make code as flat as possible (less nesting, the better)
 
-## Asynchronous
+### Asynchronous Example
 
 ```javascript
 function adder(x, y, callback) { // `callback/result` are placeholder names.
@@ -20,7 +20,7 @@ console.log('Hello')
 
 ## Postman Equivalent (JS)
 
-### Configure Asynchronous Request:
+### Configuring an Asynchronous Request:
 
 ```javascript
 function getJoke(cb) {
@@ -61,9 +61,9 @@ getJoke(joke => { // callback
 
 ---
 
-## PART 2: JS Promises and Fetch API
+## **PART 2: JS Promises and Fetch API**
 
-## PROMISES
+## Promises
 
 - An object that wraps/encapulates asynchronous code.
 - Promises it'll run the code asynchronously/and will return a result at some point.
@@ -121,7 +121,7 @@ function adder(a, b) {
 setTimeout(() => console.log(calc), 2000)
 ```
 
-### Factory Function
+## Factory Function
 
 Creates an instance of another object based on provided parameters.
 
@@ -178,9 +178,9 @@ function resolved(value) { // can convert to arrow function after testing
 ```javascript
 adderPromise(10, 20)
     .then(value => {
-        adderPromise(value, 20)
+        adderPromise(value, 20) // nested promise, forces synchronousy
         .then(resolved)
-        . catch(error)
+        .catch(error)
     })
     .catch(error)
 ```
@@ -189,10 +189,89 @@ adderPromise(10, 20)
 
 ```javascript
 adderPromise(10, 20)
-    .then(value => { // Promise 1 resolution
-        return adderPromise(value, 20) // Create and return promise 2 asynchronously
-        . catch(error)
+    .then(value => adderPromise(value, 20)) // Create and return promise 2 asynchronously
+    .then(value => adderPromise(value, 50))
+    .then(resolved) // Resolved function ^
+    .catch(error) // catches all errors within scope
+```
+
+## Refactoring `script.js` to use Promises *(part 2 of lesson 1)*
+
+```javascript
+function getJoke() {
+    return new Promise((resolve, reject) => {
+        req = new XMLHttpRequest() // Does not have to be XML data
+        req.addEventListener('load', event => resolve(event.target.response.joke)) // `resolve()` promise with joke as the value
+        req.open('GET', 'https://icanhazdadjoke.com/') // opens connection to server
+        req.setRequestHeader('Accept', 'application/json')
+        req.responseType = 'json'
+        req.send() // Sends request (Asynchronous)
     })
-    .then(resolved) // Promise 2 (nested) resolution
-    .catch(error)
+}
+
+const jokes = []
+```
+
+### Logging a single joke:
+
+```javascript
+getJoke().then(joke => console.log(jokes))
+        // Array [ "Hostess: Do you have a preference of where you sit?\r\nDad: Down." ]
+
+```
+
+### Logging multiple jokes:
+
+Creating a callback:
+
+```javascript
+const callback = joke => {
+    jokes.push(joke)
+    return getJoke()
+}
+```
+
+Calling multiple jokes within a function:
+
+```javascript
+getJoke()
+    .then(callback)
+    .then(callback)
+    .then(callback)
+    .then(joke => {
+        jokes.push(joke)
+        console.log(jokes)
+    }) 
+```
+
+## Refactoring `script.js` *REFINED*
+
+```javascript
+const jokes = []
+
+const jokePromises = [
+    getJoke(), // each call is a promise
+    getJoke(), // array of promise objects
+    getJoke(),
+    getJoke()
+]
+
+Promise.all(jokePromises) // promise class -> returns an array of multiple promises (executing asynchronously)
+    .then(jokes => console.log(jokes))
+```
+
+### Equivalent: `D-R-Y`
+
+```javascript
+const jokes = []
+
+const jokePromises = []
+
+for (let i=0; i < 5; i++) {
+    jokePromises.push(getJoke())
+}
+
+Promise.all(jokePromises) // promise class -> returns an array of multiple promises (executing asynchronously)
+    .then(jokes => console.log(jokes))
+    .catch(err => console.error(err))
 ```

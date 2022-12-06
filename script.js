@@ -17,14 +17,14 @@
 // Postman Equivalent (JS)
 
 // Configure Request
-function getJoke(cb) {
-    req = new XMLHttpRequest() // Does not have to be XML data
-    req.addEventListener('load', event => cb(event.target.response.joke))
-    req.open('GET', 'https://icanhazdadjoke.com/') // opens connection to server
-    req.setRequestHeader('Accept', 'application/json')
-    req.responseType = 'json'
-    req.send() // Sends request (Asynchronous)
-}
+// function getJoke(cb) {
+//     req = new XMLHttpRequest() // Does not have to be XML data
+//     req.addEventListener('load', event => cb(event.target.response.joke))
+//     req.open('GET', 'https://icanhazdadjoke.com/') // opens connection to server
+//     req.setRequestHeader('Accept', 'application/json')
+//     req.responseType = 'json'
+//     req.send() // Sends request (Asynchronous)
+// }
 
 // Websocket -> VS Live Server
 
@@ -34,21 +34,13 @@ function getJoke(cb) {
 // console.log('Waiting for joke...')
 
 // CALLBACK HELL
-const jokes = []
+// const jokes = []
 
-getJoke(joke => { // callback
-    jokes.push(joke)
-    console.log(jokes)
-    getJoke(joke => { // callback hell
-        jokes.push(joke)
-        console.log(jokes)
-    })
-})
-
-// ------------------------------------- PART 2 -----------------------------------------
-
-// turn into...
-
-// PROMISES
-// An object that wraps/encapulates asynchronous code
-// Promises it'll run the code asynchronously/and will return a result at some point.
+// getJoke(joke => { // callback
+//     jokes.push(joke)
+//     console.log(jokes)
+//     getJoke(joke => { // callback hell
+//         jokes.push(joke)
+//         console.log(jokes)
+//     })
+// })
