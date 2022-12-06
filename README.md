@@ -1,4 +1,4 @@
-# Javascript Aync and Callbacks
+# Javascript Aync, Callbacks and Promises
 
 ## NOTES
 
@@ -99,6 +99,10 @@ We define what happens in either of these cases by linting a callback function t
 ### Notes
 
 - If a promise relys on a global variable -> wrap the promise in a factory function.
+- Do not use promises for everything!
+  - May be overkill for more simple tasks (can overcomplicate your project)
+  - Sometimes a simple callback is a lot easier and cleaner
+- Suitable for more complex tasks
 
 ### Operands
 
@@ -273,5 +277,57 @@ for (let i=0; i < 5; i++) {
 
 Promise.all(jokePromises) // promise class -> returns an array of multiple promises (executing asynchronously)
     .then(jokes => console.log(jokes))
+    .catch(err => console.error(err))
+```
+
+## Fetch API
+
+- **ES6**: New way of viewing requests -> Fetch API
+- **Promise-based**: More efficient at intergrating with code asynchronously
+
+### Refactoring `function getJoke()` using Fetch API
+
+- Also a factory function (like `getJoke()`)
+
+### From...
+
+```javascript
+function getJoke() {
+    return new Promise((resolve, reject) => {
+        req = new XMLHttpRequest() // Does not have to be XML data
+        req.addEventListener('load', event => resolve(event.target.response.joke)) // `resolve()` promise with joke as the value
+        req.open('GET', 'https://icanhazdadjoke.com/') // opens connection to server
+        req.setRequestHeader('Accept', 'application/json')
+        req.responseType = 'json'
+        req.send() // Sends request (Asynchronous)
+    })
+}
+```
+
+### to...
+
+```javascript
+// FETCH API REFACTORING
+const jokes = []
+
+function fetchJoke() { // GET request (response request) -> Returns a promise
+    return new Promise((resolve, reject) => { // Wrap `fetch` call in a promise -> enables control to what it returns
+    fetch('https://icanhazdadjoke.com/', { // Fetches response object (promise)
+        headers: { 'Accept': 'application/json'} // Convert to JSON
+        }) 
+        .then(result => result.json()) // Captures (parses) `resolve` value from promise -> Returns another promise (result.json())
+        .then(data => console.log(data.joke)) // Resolves wrapped `fetch` promise -> `.joke` returns response as a string
+    })
+}
+
+// Logs all joke promises (main program)
+const jokePromises = []
+
+for (let i=0; i < 5; i++) {
+    jokePromises.push(fetchJoke())
+}
+
+Promise.all(jokePromises) // stores `.all` promise resolutions into array (jokePromises)
+    .then(responses => console.log(jokes))
     .catch(err => console.error(err))
 ```
