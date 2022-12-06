@@ -1,4 +1,5 @@
-const x = 2 // operand
+// OPERANDS
+const x = 2
 const y = 5
 
 function adder(a, b) {
@@ -19,23 +20,48 @@ function adderPromise(x, y) { // Factory function
 }
 // Can create as many adder functions as we want with different values of x and y
 
-setTimeout(() => console.log(calc), 2000)
-
 // Attaches (.then) callback (res) to the factory function (adderPromise) = logs result OR catches error
-adderPromise(10, 30) // chains `.then` and `.catch` to promise
-    .then(res => console.log(res)) // `.then` is asynchronous
-    .catch(err => console.error(err)) // catches rejection -> logs error
+// adderPromise(10, 30) // chains `.then` and `.catch` to promise
+//     .then(res => console.log(res)) // `.then` is asynchronous
+//     .catch(err => console.error(err)) // catches rejection -> logs error
 
 // Essentially a chain of callbacks, but...
-// It is a more sophisticated structure
-// Allows asynchronousy
+// - It is a more sophisticated structure
+// - Allows asynchronousy
 
 console.log('calculating...')
 
-// If .`then` and `.catch` are the same for all `adderPromise`:
+// If .`then` and `.catch` are the same for all (multiple) `adderPromises`:
 
-// const resolved = res => console.log(res)
+const resolved = value => console.log(value)
+const error = err => console.log(err)
 
-// adderPromise(10, 30)
-//     .then(resolved)
-//     .catch(err => console.error(err))
+// Equivalent:
+// function resolved(value) {
+//     console.log(value)
+// }
+
+adderPromise(10, 30).then(resolved).catch(error) // MUST be a global variable
+adderPromise(10, 'asdf').then(resolved).catch(error)
+adderPromise(50, 60).then(resolved).catch(error)
+    // 40
+    // 110
+    // Operands must be numbers.
+
+// Nested Promise Hell ⚠︎
+adderPromise(10, 20)
+    .then(value => {
+        adderPromise(value, 20)
+        .then(resolved)
+        . catch(error) // Forces synchronousy
+    })
+    .catch(error)
+
+// Solution:
+adderPromise(10, 20)
+    .then(value => { // Promise 1 resolution
+        return adderPromise(value, 20) // Create and return promise 2 asynchronously
+        . catch(error)
+    })
+    .then(resolved) // Promise 2 (nested) resolution
+    .catch(error)
