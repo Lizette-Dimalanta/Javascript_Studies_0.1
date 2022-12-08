@@ -489,18 +489,18 @@ console.log('End of Main') // Appears first
 - Can be manipulated in browser console
 - Can not be stored directly, but can be stringified and stored as a JSON string
 
-### `localStorage`
+## `localStorage`
 
 - Stores key value pairs with a particular URL, in the user's browser indefinitely (until cleared)
 
-View `localStorage`:
+### View `localStorage`:
 
 ```javascript
 localStorage
     // Storage { foo: "bar", length: 1 }
 ```
 
-Set or Read Values:
+### Set or Read Values (`localStorage`):
 
 ```javascript
 // v1:
@@ -512,7 +512,7 @@ x = { name: "Lizette", age: "22" } // Set value
     // Object { name: "Lizette", age: "22" }
 ```
 
-Store Object:
+### Store Object:
 
 - Object must be stringified and stored as a JSON string
 
@@ -522,7 +522,7 @@ localStorage.person = JSON.stringify(x) // Stringify value into JSON string -> S
     // "{\"name\":\"Lizette\",\"age\":\"22\"}"
 ```
 
-Calling Object (parse):
+### Calling Object (parse):
 
 ```javascript
 // v2 cont:
@@ -530,21 +530,84 @@ JSON.parse(localStorage.person)
     // Object { name: "Lizette", age: "22" }
 ```
 
-### `sessionStorage`
+## `sessionStorage`
 
 - Stores until user closes their browser/terminate session
 - For more temporary storage (e.g. authentication)
 
-View `sessionStorage`:
+### View `sessionStorage`:
 
 ```javascript
 sessionStorage
     // Storage { spam: "42", IsThisFirstTime_Log_From_LiveServer: "true", length: 2 }
 ```
 
-Set or Read Values:
+### Set or Read Values (`sessionStorage`):
 
 ```javascript
 sessionStorage.spam = 42
     // 42
+```
+
+## Storing Jokes into `localStorage`
+
+1. Build `fetchJoke()` function
+
+```javascript
+const jokes = []
+
+async function fetchJoke() { // added `async` -> returns `result` value ↓
+    try {
+    const result = await fetch('https://icanhazdadjoke.com/', { // `await` instead of `.then` - awaits promise for a resolve value
+        headers: { 'Accept': 'application/json'}
+        })
+        const data = await result.json() // Await JSON promise `data`
+        return data.joke // Return JSON data
+    }
+    catch { // catch error
+        throw new Error('Could not retrieve joke!')
+    }
+}
+```
+
+2. Function to load and display jokes from `localStorage` (if any) && concatenate (join) new jokes
+
+```javascript
+function loadJokes(jokes) {
+    // Conditional Expression ↓: Retrieve and parse existing jokes (if truthy) OR || parse empty JSON array (if falsy)
+    jokes = JSON.parse(localStorage.jokes || '[]').concat(jokes) // concatenates jokes to any existing jokes
+    localStorage.jokes = JSON.stringify(jokes) // JSON stringify Jokes and store into new array
+    document.querySelector('ul').innerHTML = jokes.map(joke => `<li>${joke}</li>`).join('') // Replace all current items with new combined list
+}
+```
+
+3. Click button to get 5 jokes + append to `localStorage.jokes`
+
+```javascript
+function get5jokes() {
+    const jokePromises = []
+    for (let i=0; i < 5; i++) {
+        jokePromises.push(fetchJoke()) 
+    }
+    Promise.all(jokePromises)                                                   
+        .then(jokes => loadJokes(jokes)) // Concates new jokes to existing jokes
+        .catch(err => console.error(err))                                                                        
+}
+
+// Set Event Listener
+document.querySelector('button').addEventListener('click', get5jokes) // Click button, get 5 jokes
+```
+
+4. Reconstruct existing `localStorage.jokes` and display in DOM list
+
+```javascript
+// Conditional Expression ↓: Retrieve and parse existing jokes (if truthy) OR || parse empty JSON array (if falsy)
+const oldJokes = JSON.parse(localStorage.jokes || '[]')
+document.querySelector('ul').innerHTML += oldJokes.map(joke => `<li>${joke}</li>`).join('')
+```
+
+5. Call `loadJokes()` to call updated list
+
+```javascript
+loadJokes([]) // Must have empty array for function to work
 ```

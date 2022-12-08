@@ -102,6 +102,48 @@
 // }
 
 // PART 3: JS Async/Await, Modules and Web Storage ----------------------------------------------------------------
+// const jokes = []
+
+// async function fetchJoke() { // added `async` -> returns `result` value ↓
+//     try {
+//     const result = await fetch('https://icanhazdadjoke.com/', { // `await` instead of `.then` - awaits promise for a resolve value
+//         headers: { 'Accept': 'application/json'}
+//         })
+//         const data = await result.json() // Await JSON promise `data`
+//         return data.joke // Return JSON data
+//     }
+//     catch { // catch error
+//         throw new Error('Could not retrieve joke!')
+//     }
+// }
+
+// Click button to get 5 jokes -> Append to list
+// function get5jokes() {
+//     const jokePromises = []
+//     for (let i=0; i < 5; i++) {
+//         jokePromises.push(fetchJoke()) 
+//     }
+//     Promise.all(jokePromises)                                                    // ↓ `backticks`
+//         .then(jokes => document.querySelector('ul').innerHTML += jokes.map(joke => `<li>${joke}</li>`).join('')) // Append <li>joke</li> string to <ul> in HTML
+//         .catch(err => console.error(err))                                                                        // `.join('')` joins string into array (coercion/concatenate) - empty delimiter
+// }
+
+// // Set Event Listener
+// document.querySelector('button').addEventListener('click', get5jokes) // Click button, get 5 jokes
+
+// // Create an async function:
+// // Syntactic sugar (`async`): Is a promise under the hood
+// async function asyncGetJoke() { 
+//     const result = await fetchJoke() // Returns a promise
+//     console.log(result)
+// }
+
+// asyncGetJoke() // .then(x => console.log(x)) // can use `.then` due to async function (if there is no `await`)
+
+// console.log('End of Main') // Appears first
+
+// Storing Jokes into LocalStorage
+
 const jokes = []
 
 async function fetchJoke() { // added `async` -> returns `result` value ↓
@@ -117,30 +159,37 @@ async function fetchJoke() { // added `async` -> returns `result` value ↓
     }
 }
 
-// Click button to get 5 jokes -> Append to list
+function loadJokes(jokes) {
+    jokes = JSON.parse(localStorage.jokes || '[]').concat(jokes) // Retrieve and parse existing jokes (if truthy) OR || parse empty JSON array (if falsy) <- conditional expression 
+    localStorage.jokes = JSON.stringify(jokes) // JSON stringify Jokes and store into new array                                                           <- concatenates parameter to any existing jokes
+    document.querySelector('ul').innerHTML = jokes.map(joke => `<li>${joke}</li>`).join('')
+}
+
 function get5jokes() {
     const jokePromises = []
     for (let i=0; i < 5; i++) {
         jokePromises.push(fetchJoke()) 
     }
-    Promise.all(jokePromises)                                                    // ↓ `backticks`
-        .then(jokes => document.querySelector('ul').innerHTML += jokes.map(joke => `<li>${joke}</li>`).join('')) // Append <li>joke</li> string to <ul> in HTML
-        .catch(err => console.error(err))                                                                        // `.join('')` joins string into array (coercion/concatenate) - empty delimiter
+    Promise.all(jokePromises)                                                   
+        .then(jokes => loadJokes(jokes)) // Concates new jokes to existing jokes
+        .catch(err => console.error(err))                                                                        
 }
 
 // Set Event Listener
 document.querySelector('button').addEventListener('click', get5jokes) // Click button, get 5 jokes
 
+// Reconstructs localStorage.jokes
+const oldJokes = JSON.parse(localStorage.jokes || '[]') // Retrieve and parse existing jokes (if truthy) OR || parse empty JSON array (if falsy) <- conditional expression
+document.querySelector('ul').innerHTML += oldJokes.map(joke => `<li>${joke}</li>`).join('')
+
+loadJokes([]) // Give empty array
+
 // Create an async function:
 // Syntactic sugar (`async`): Is a promise under the hood
-async function asyncGetJoke() { 
-    const result = await fetchJoke() // Returns a promise
-    console.log(result)
-}
-
-asyncGetJoke() // .then(x => console.log(x)) // can use `.then` due to async function (if there is no `await`)
+// async function asyncGetJoke() { 
+//     const result = await fetchJoke() // Returns a promise
+//     console.log(result)
+// }
+// asyncGetJoke() // .then(x => console.log(x)) // can use `.then` due to async function (if there is no `await`)
 
 console.log('End of Main') // Appears first
-
-// WEB STORAGE
-
