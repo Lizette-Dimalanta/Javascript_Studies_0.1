@@ -2,34 +2,47 @@
 
 ## Table of Contents
 
-### PART 1: Javascript Async and Callbacks
+### PART 1: Async and Callbacks
 
 1. [General Notes](#general-notes)
-2. [Asynchronous Example](#asynchronous-example)
-3. [Configuring an Asynchronous Request](#configuring-an-asynchronous-request)
-4. [Inserting into HTML](#inserting-into-html)
-5. [⚠︎ Callback Hell](#callback-hell-⚠︎)
+2. [**Asynchronous** Example](#asynchronous-example)
+3. [Configuring an **Asynchronous Request**](#configuring-an-asynchronous-request)
+4. [Adding List and Button to **DOM**](#adding-list-and-button-to-dom-html)
+5. [Inserting into **HTML**](#inserting-into-html)
+6. [**⚠︎ Callback Hell**](#callback-hell-⚠︎)
 
-### PART 2: Javascript Promises and Fetch API
+### PART 2: Promises and Fetch API
 
-6. [Promises](#promises)
+7. [**Promises**](#promises)
    - [3 Promise States](#3-promise-states)
-7. [Code Examples](#code-examples)
-8. [Notes (Promises)](#notes)
-8. [Operands](#operands)
-9.  [Adder Function](#adder-function)
-10. [`setTimeout`](#setTimeout)
-11. [Factory Function](#factory-function)
+8. [`Code Examples`](#code-examples)
+9. [**Notes** *(Promises)*](#notes)
+10. [**Operands**](#operands)
+11. [**Adder Function**](#adder-function)
+12. [**`setTimeout`**](#settimeout)
+13. [**Factory Function**](#factory-function)
     - [Attaching to Factory Function](#attaching-to-factory-function-then-and-catch)
-12. [⚠︎ Promise Hell](#promise-hell-⚠︎)
+14. [**⚠︎ Promise Hell**](#promise-hell-⚠︎)
     - [Solution](#solution)
-13. [Refactoring `script.js` to use Promises](#refactoring-scriptjs-to-use-promises-part-2-of-lesson-1)
-    - [Logging a single joke](#logging-a-single-joke)
-    - [Logging multiple jokes](#logging-multiple-jokes)
-14. [REFINED: Refactoring `script.js`](#refactoring-scriptjs-refined)
+15. [Refactoring **`script.js`** to use **Promises**](#refactoring-scriptjs-to-use-promises-part-2-of-lesson-1)
+    - [Logging a **single** joke](#logging-a-single-joke)
+    - [Logging **multiple** jokes](#logging-multiple-jokes)
+16. [**REFINED**: Refactoring **`script.js`**](#refactoring-scriptjs-refined)
     - [D-R-Y Equivalent](#equivalent-d-r-y)
-15. [Fetch API](#fetch-api)
-    - [Refactoring `function getJoke()` using Fetch API](#refactoring-function-getjoke-using-fetch-api)
+17. [**Fetch API**](#fetch-api)
+    - [**Refactoring** `function getJoke()` using **Fetch API**](#refactoring-function-getjoke-using-fetch-api)
+
+### PART 3: Async/Await, Modules and Web Storage
+
+18. [**Notes**](#notes-part-3)
+    - [Defer Async](#defer-async)
+19. [Importing **`defer async` script** into HTML](#importing-defer-async-script-into-html)
+20. [Creating an **Async Function**](#creating-an-async-function)
+21. [Refactoring **`fetchJoke()`** Function with **`async await`**](#refactoring-fetchjoke-function-with-async-await---dry)
+22. [Adding Jokes into **`.html` List**](#adding-jokes-into-html-list)
+23. [**Web Storage**](#web-storage)
+    - [`localStorage`](#localstorage)
+    - [`sessionStorage`](#sessionstorage)
 
 ## General Notes
 
@@ -63,6 +76,16 @@ function getJoke(cb) {
     req.responseType = 'json'
     req.send() // Sends request (Asynchronous)
 }
+```
+
+## Adding List and Button to DOM (`.html`)
+
+```html
+<body>
+    <h1>Promises</h1>
+    <ul></ul>
+    <button>Get 5 Jokes</button>
+</body>
 ```
 
 ## Inserting into HTML
@@ -385,27 +408,36 @@ Promise.all(jokePromises) // stores `.all` promise resolutions into array (jokeP
 
 ## Code Examples *(part 3)*
 
-
-
-### Importing script into HTML
+### Importing `defer async` script into HTML
 
 ```javascript
 <script defer async src="joke.js"></script> 
 ```
 
-### Adding List and Button to DOM (`.html`)
+## Creating an Async Function
 
-```html
-<body>
-    <h1>Promises</h1>
-    <ul></ul>
-    <button>Get 5 Jokes</button>
-</body>
-```
-
-### `fetchJoke()` Function
+- `Async`: Allows to keep parsing the rest of the HTML/constructing the DOM while `script.js` is being retrieved and downloaded
+  - Will automatically wrap a return value in a promise
 
 ```javascript
+async function asyncGetJoke() { 
+    const result = await fetchJoke() // Returns a promise
+    console.log(result)
+}
+
+asyncGetJoke() // .then(x => console.log(x)) // can use `.then` due to async function (if there is no `await`)
+
+console.log('End of Main') // Appears first
+```
+
+## Refactoring `fetchJoke()` Function with `async await` - *D.R.Y*
+
+- See [Creating an Async Function](#creating-an-async-function) for reference
+- Function is wrapped with `async` function to create a promise
+- Exact same as before => Results in a promise
+
+```javascript
+// Before:
 const jokes = []
 
 function fetchJoke() {
@@ -419,13 +451,8 @@ function fetchJoke() {
 }
 ```
 
-### ↓ Refactoring `fetchJoke()` Function with `async await` - *D.R.Y*
-
-- See [Creating an Async Function](#creating-an-async-function) for reference
-- Function is wrapped with `async` function to create a promise
-- Exact same as before => Results in a promise
-
 ```javascript
+// With async (equivalent)
 async function fetchJoke() { // added `async` -> returns `result` value ↓
     try {
     const result = await fetch('https://icanhazdadjoke.com/', { // `await` instead of `.then` - awaits promise for a resolve value
@@ -460,22 +487,6 @@ function get5jokes() {
 
 ```javascript
 document.querySelector('button').addEventListener('click', get5jokes) // Click button, get 5 jokes
-```
-
-### Creating an Async Function
-
-- `Async`: Allows to keep parsing the rest of the HTML/constructing the DOM while `script.js` is being retrieved and downloaded
-  - Will automatically wrap a return value in a promise
-
-```javascript
-async function asyncGetJoke() { 
-    const result = await fetchJoke() // Returns a promise
-    console.log(result)
-}
-
-asyncGetJoke() // .then(x => console.log(x)) // can use `.then` due to async function (if there is no `await`)
-
-console.log('End of Main') // Appears first
 ```
 
 ## Web Storage
