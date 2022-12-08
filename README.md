@@ -15,9 +15,7 @@
 6. [Promises](#promises)
    - [3 Promise States](#3-promise-states)
 7. [Code Examples](#code-examples)
-
-General:
-
+8. [Notes (Promises)](#notes)
 8. [Operands](#operands)
 9.  [Adder Function](#adder-function)
 10. [`setTimeout`](#setTimeout)
@@ -93,7 +91,7 @@ getJoke(joke => { // callback
 
 ---
 
-## **PART 2: JS Promises and Fetch API**
+## **PART 2:** JS Promises and Fetch API
 
 ## Promises
 
@@ -345,7 +343,8 @@ const jokes = []
 function fetchJoke() { // GET request (response request) -> Returns a promise
     return new Promise((resolve, reject) => { // Wrap `fetch` call in a promise -> enables control to what it returns
     fetch('https://icanhazdadjoke.com/', { // Fetches response object (promise)
-        headers: { 'Accept': 'application/json'} // Convert to JSON
+        headers: { 'Accept': 'application/json'} // Reconstructs a JSON string into a Javascript object
+        method: 'POST' // POST request (Default is 'GET', if not specified)
         }) 
         .then(result => result.json()) // Captures (parses) `resolve` value from promise -> Returns another promise (result.json())
         .then(data => console.log(data.joke)) // Resolves wrapped `fetch` promise -> `.joke` returns response as a string
@@ -362,4 +361,190 @@ for (let i=0; i < 5; i++) {
 Promise.all(jokePromises) // stores `.all` promise resolutions into array (jokePromises)
     .then(responses => console.log(jokes))
     .catch(err => console.error(err))
+// Will keep same order (even if it finishes out of sequence)
+```
+
+---
+
+## **PART 3:** Javascript Async/Await, Modules and Web Storage
+
+## Notes *(part 3)*
+
+- `def` **XHR**: *XMLHttpRequest (XHR)* objects are used to interact with servers.
+- `def` **Syntactic Sugar**: A term for a more concise syntax (shorthand) that provides the same functionality for something that already exists. No new functionality is introduced.
+
+### Defer Async
+
+- Defers execution until the DOM is fully executed
+  - Will wait until the all components of DOM exists to execute
+- `Async`: Allows to keep parsing the rest of the HTML/constructing the DOM while `script.js` is being retrieved and downloaded
+  - Will automatically wrap a return value in a promise
+- Used when...
+  - Doing any DOM interactions
+  - Using multiple scripts (unless it isn't interacting with the DOM)
+
+## Code Examples *(part 3)*
+
+
+
+### Importing script into HTML
+
+```javascript
+<script defer async src="joke.js"></script> 
+```
+
+### Adding List and Button to DOM (`.html`)
+
+```html
+<body>
+    <h1>Promises</h1>
+    <ul></ul>
+    <button>Get 5 Jokes</button>
+</body>
+```
+
+### `fetchJoke()` Function
+
+```javascript
+const jokes = []
+
+function fetchJoke() {
+    return new Promise((resolve, reject) => {
+    fetch('https://icanhazdadjoke.com/', {
+        headers: { 'Accept': 'application/json'}
+        })
+        .then(result => result.json())
+        .then(data => resolve(data.joke))
+    })
+}
+```
+
+### ↓ Refactoring `fetchJoke()` Function with `async await` - *D.R.Y*
+
+- See [Creating an Async Function](#creating-an-async-function) for reference
+- Function is wrapped with `async` function to create a promise
+- Exact same as before => Results in a promise
+
+```javascript
+async function fetchJoke() { // added `async` -> returns `result` value ↓
+    try {
+    const result = await fetch('https://icanhazdadjoke.com/', { // `await` instead of `.then` - awaits promise for a resolve value
+        headers: { 'Accept': 'application/json'}
+        })
+        const data = await result.json() // Await JSON promise `data`
+        return data.joke // Return JSON data
+    }
+    catch { // catch error
+        throw new Error('Could not retrieve joke!')
+    }
+}
+```
+
+### Adding Jokes into `.html` List
+
+Click button to get 5 jokes -> Appends to list
+
+```javascript
+function get5jokes() {
+    const jokePromises = []
+    for (let i=0; i < 5; i++) {
+        jokePromises.push(fetchJoke()) 
+    }
+    Promise.all(jokePromises)                                                    // ↓ `backticks`
+        .then(jokes => document.querySelector('ul').innerHTML += jokes.map(joke => `<li>${joke}</li>`).join('')) // Append <li>joke</li> string to <ul> in HTML
+        .catch(err => console.error(err))                                                                        // `.join('')` joins string into array (coercion/concatenate) - empty delimiter
+}
+```
+
+### Setting Event Listener for Button
+
+```javascript
+document.querySelector('button').addEventListener('click', get5jokes) // Click button, get 5 jokes
+```
+
+### Creating an Async Function
+
+- `Async`: Allows to keep parsing the rest of the HTML/constructing the DOM while `script.js` is being retrieved and downloaded
+  - Will automatically wrap a return value in a promise
+
+```javascript
+async function asyncGetJoke() { 
+    const result = await fetchJoke() // Returns a promise
+    console.log(result)
+}
+
+asyncGetJoke() // .then(x => console.log(x)) // can use `.then` due to async function (if there is no `await`)
+
+console.log('End of Main') // Appears first
+```
+
+## Web Storage
+
+- Persists data purely on the user's browser (client side)
+- Consists of two objects:
+  - [Local Storage](#localstorage)
+  - [Session Storage](#sessionstorage)
+- Difference is how long the data persists (is held)
+- Depends what type of data is stored
+- Can be manipulated in browser console
+- Can not be stored directly, but can be stringified and stored as a JSON string
+
+### `localStorage`
+
+- Stores key value pairs with a particular URL, in the user's browser indefinitely (until cleared)
+
+View `localStorage`:
+
+```javascript
+localStorage
+    // Storage { foo: "bar", length: 1 }
+```
+
+Set or Read Values:
+
+```javascript
+// v1:
+localStorage.foo = "bar"
+    // "bar"
+
+// v2:
+x = { name: "Lizette", age: "22" } // Set value
+    // Object { name: "Lizette", age: "22" }
+```
+
+Store Object:
+
+- Object must be stringified and stored as a JSON string
+
+```javascript
+// v2 cont:
+localStorage.person = JSON.stringify(x) // Stringify value into JSON string -> Store in local storage
+    // "{\"name\":\"Lizette\",\"age\":\"22\"}"
+```
+
+Calling Object (parse):
+
+```javascript
+// v2 cont:
+JSON.parse(localStorage.person)
+    // Object { name: "Lizette", age: "22" }
+```
+
+### `sessionStorage`
+
+- Stores until user closes their browser/terminate session
+- For more temporary storage (e.g. authentication)
+
+View `sessionStorage`:
+
+```javascript
+sessionStorage
+    // Storage { spam: "42", IsThisFirstTime_Log_From_LiveServer: "true", length: 2 }
+```
+
+Set or Read Values:
+
+```javascript
+sessionStorage.spam = 42
+    // 42
 ```
