@@ -13,6 +13,8 @@
 
 ### PART 2: Promises and Fetch API
 
+**Promises:**
+
 7. [**Promises**](#promises)
    - [3 Promise States](#3-promise-states)
 8. [`Code Examples`](#code-examples)
@@ -29,10 +31,15 @@
     - [Logging **multiple** jokes](#logging-multiple-jokes)
 16. [**REFINED**: Refactoring **`script.js`**](#refactoring-scriptjs-refined)
     - [D-R-Y Equivalent](#equivalent-d-r-y)
+
+**Fetch API:**
+
 17. [**Fetch API**](#fetch-api)
     - [**Refactoring** `function getJoke()` using **Fetch API**](#refactoring-function-getjoke-using-fetch-api)
 
 ### PART 3: Async/Await, Modules and Web Storage
+
+**Async/Await:**
 
 18. [**Notes**](#notes-part-3)
     - [Defer Async](#defer-async)
@@ -40,9 +47,21 @@
 20. [Creating an **Async Function**](#creating-an-async-function)
 21. [Refactoring **`fetchJoke()`** Function with **`async await`**](#refactoring-fetchjoke-function-with-async-await---dry)
 22. [Adding Jokes into **`.html` List**](#adding-jokes-into-html-list)
+
+**Web Storage:**
+
 23. [**Web Storage**](#web-storage)
     - [`localStorage`](#localstorage)
     - [`sessionStorage`](#sessionstorage)
+
+**Modules:**
+
+24. [Import a Module into `HTML`](#import-module-into-html)
+25. [Pull `math.js` into `script js`](#pull-mathjs-into-script-js)
+26. [*ERROR*: `Uncaught SyntaxError: ambiguous indirect export: default`](#error-uncaught-syntaxerror-ambiguous-indirect-export-default)
+    - [Correction](#correction)
+
+---
 
 ## General Notes
 
@@ -640,3 +659,54 @@ document.querySelector('ul').innerHTML += oldJokes.map(joke => `<li>${joke}</li>
 ```javascript
 loadJokes([]) // Must have empty array for function to work
 ```
+
+## Modules
+
+### Import module into html
+
+```html
+<script defer async src="script.js" type ="module"></script>
+```
+
+### Pull math.js into script js
+
+```javascript
+import PI, add from './math' // Modules
+// OR
+import { PI, add } from './math.js'
+    // Importing standalone variables
+// OR
+import * as foo from './math.js' // Wildcard
+    // Import all from module -> wrap as an object (foo)
+```
+
+### *ERROR*: `Uncaught SyntaxError: ambiguous indirect export: default`
+
+- `def`: Looking for a default export from the module.
+  - *Python*: Assumes any python file is a module (automatically makes it available for import)
+  - **Javascript**: We must **explicitly** state it is a module
+    - Can not be imported unless it is first export it from the module (expose)
+    - Allows us to protect data and limit access from outside the module
+
+### **Correction:**
+
+Add to end of module before importing ↓
+
+```javascript
+export default PI // Can only be ONE default export
+// OR
+export { PI, add } // Add multiple exports (wrap in an object)
+```
+
+Can also export within a function:
+
+- Now works with `const`
+
+```javascript
+export function add(a, b) { // exporting each function individually
+    return a + b
+}
+```
+
+- Even though you can have an implicity import, you MUST explicitly state the export
+- There is no wildcard (`*`) export
