@@ -112,6 +112,8 @@ getJoke(joke => { // callback
 })
 ```
 
+[Back to **Table of Contents** Here!](#table-of-contents)
+
 ---
 
 ## **PART 2:** JS Promises and Fetch API
@@ -146,6 +148,8 @@ We define what happens in either of these cases by linting a callback function t
 
 - `.then()` method (fufillment callback)
 - `.catch()` method (rejection callback)
+
+[Back to **Table of Contents** Here!](#table-of-contents)
 
 ## Code Examples
 
@@ -197,6 +201,8 @@ function adderPromise(x, y) { // Factory function
     })
 }
 ```
+
+[Back to **Table of Contents** Here!](#table-of-contents)
 
 ## Attaching to Factory Function (`.then` and `.catch`)
 
@@ -251,6 +257,8 @@ adderPromise(10, 20)
     .then(resolved) // Resolved function ^
     .catch(error) // catches all errors within scope
 ```
+
+[Back to **Table of Contents** Here!](#table-of-contents)
 
 ## Refactoring `script.js` to use Promises *(part 2 of lesson 1)*
 
@@ -333,6 +341,8 @@ Promise.all(jokePromises) // promise class -> returns an array of multiple promi
     .catch(err => console.error(err))
 ```
 
+[Back to **Table of Contents** Here!](#table-of-contents)
+
 ## Fetch API
 
 - **ES6**: New way of viewing requests -> Fetch API
@@ -387,6 +397,8 @@ Promise.all(jokePromises) // stores `.all` promise resolutions into array (jokeP
 // Will keep same order (even if it finishes out of sequence)
 ```
 
+[Back to **Table of Contents** Here!](#table-of-contents)
+
 ---
 
 ## **PART 3:** Javascript Async/Await, Modules and Web Storage
@@ -429,6 +441,8 @@ asyncGetJoke() // .then(x => console.log(x)) // can use `.then` due to async fun
 
 console.log('End of Main') // Appears first
 ```
+
+[Back to **Table of Contents** Here!](#table-of-contents)
 
 ## Refactoring `fetchJoke()` Function with `async await` - *D.R.Y*
 
@@ -488,6 +502,8 @@ function get5jokes() {
 ```javascript
 document.querySelector('button').addEventListener('click', get5jokes) // Click button, get 5 jokes
 ```
+
+[Back to **Table of Contents** Here!](#table-of-contents)
 
 ## Web Storage
 
@@ -559,6 +575,8 @@ sessionStorage
 sessionStorage.spam = 42
     // 42
 ```
+
+[Back to **Table of Contents** Here!](#table-of-contents)
 
 ## Storing Jokes into `localStorage`
 
