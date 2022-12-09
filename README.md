@@ -1,4 +1,4 @@
-# Javascript Async, Callbacks and Promises
+# Javascript Studies *(PART 2)*
 
 ## Table of Contents
 
