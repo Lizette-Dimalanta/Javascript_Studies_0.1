@@ -750,15 +750,27 @@ export function add(a, b) { // exporting each function individually
    - Most recently updated
    - 2 - 3 years max suggested
 
-## Using Thid-Party Packages
+## Using Third-Party Packages
 
-1. Set up Node application
+1. **Set up Node application:**
 
-- `-y` : Assumes `'yes'` for all settings
 - Creates `package.json` file
 
 ```bash
 npm init -y 
+# -y : Assumes 'yes' for all settings
+```
+
+1. **Install NPM package:**
+
+Install package:
+
+`'i'` - Installs latest version
+
+```bash
+npm i roll
+# OR
+npm i roll@1.2 # Install specific version
 ```
 
 ## `package.json`
@@ -772,15 +784,19 @@ npm init -y
   - Others/You may not be using VScode in a professional work environment
 - `Recommended` : Debug through terminal
 
-### `package.json` Code Example
+### `package.json` Code Snippet
+
+- Essentially identifies as as a `node.js` application
 
 ```json
 {
   "name": "callbacks", 
   "version": "1.0.0",
   "description": "Javascript Studies",
-  "main": "script.js", // ← Where should Node.js start?
+  "main": "script.js", // ← Where should Node.js start? (Main Entry Point)
+  "type": "module",
   "scripts": { // ↓ Can specify multiple scripts
+    "start": "node script", // Add any extra parameters
     "test": "echo \"Error: no test specified\" && exit 1" // Terminal Commands
   },
   "repository": { // GitHub Repository Details (if applicable)
@@ -793,6 +809,82 @@ npm init -y
   "bugs": { // Bugs URL → Open support ticket (GitHub Issues Tab)
     "url": "https://github.com/Lizette-Dimalanta/JS_async_callbacks/issues"
   },
-  "homepage": "https://github.com/Lizette-Dimalanta/JS_async_callbacks#readme" // Webpage for Application (if applicable)
+  "homepage": "https://github.com/Lizette-Dimalanta/JS_async_callbacks#readme", // Webpage for Application (if applicable)
+  "dependencies": { // Appears after package installation
+  "roll": "^1.3.1" // Requires v1.3.1 or higher
+  }
 }
+```
+
+## ↑ ES6 Module Syntax
+
+### Using `main` parameter in `package.json`
+
+**Module MUST be specified before use:**
+
+**`script.js` → `script.mjs`**
+
+*OR*
+
+**Include:**
+
+**`"type": "module",`** under `"main"`.
+
+### **`Scripts:`**
+
+- **COMMAND LINE:** Can use `run` instead of `node` for:
+  - `"test": " "`
+  - `"start": " "`
+
+**CODE** → `"start": "node script"`
+
+**COMMAND LINE** → `npm start`
+
+**Result:**
+
+```bash
+> callbacks@1.0.0 start
+> node script
+
+12
+Hello world!
+```
+
+## `package-lock.json`
+
+- A detailed layout/description of **all dependencies** (and its sub-dependencies)
+- Is **platform-dependent** (individual to the user/device)
+- `NPM` will use this folder to get details on dependencies (especially for updates)
+
+### `package-lock.json` Dependency Code Snippet
+
+- `resolved` → Package source URL
+- `Integrity` Hash → Hash of the file contents
+  - Allows `NPM` to determine whether the package has been tampered with
+
+```json
+    "node_modules/minimist": {
+      "version": "1.2.7",
+      "resolved": "https://registry.npmjs.org/minimist/-/minimist-1.2.7.tgz",
+      "integrity": "sha512-bzfL1YUZsP41...",
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    }
+```
+
+## `node_modules` Directory
+
+- Installs packages **locally** into the `node_modules` directory
+- Only contains packages that are **dependencies** of the project
+- `node_modules` MUST be included in `.gitignore` because:
+  - Can be very large in size
+  - Is **platform-dependent** (individual to the user/device)
+
+## Adding to `.gitignore`
+
+```bash
+# Both are platform-dependent
+node_modules
+package-lock.json
 ```

@@ -2,9 +2,14 @@
 // Pull math.js module into script.js
 import { PI, add } from './math.js'
     // standalone variables (destructured module)
+import Roll from 'roll'
 
 console.log(add(5, 7))
- 
+
+const roll = new Roll()
+console.log(roll.roll('2d10'))
+
+
 
 
 
