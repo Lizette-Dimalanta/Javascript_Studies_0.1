@@ -6,7 +6,7 @@ import Roll from 'roll'
 
 console.log(add(5, 7))
 
-const roll = new Roll()
+export const roll = new Roll()
 console.log(roll.roll('2d10'))
 
 

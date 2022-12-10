@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-### PART 1: Async and Callbacks
+### **PART 1:** Async and Callbacks
 
 1. [General Notes](#general-notes)
 2. [**Asynchronous** Example](#asynchronous-example)
@@ -11,7 +11,7 @@
 5. [Inserting into **HTML**](#inserting-into-html)
 6. [**⚠︎ Callback Hell**](#callback-hell-⚠︎)
 
-### PART 2: Promises and Fetch API
+### **PART 2:** Promises and Fetch API
 
 **Promises:**
 
@@ -37,7 +37,7 @@
 17. [**Fetch API**](#fetch-api)
     - [**Refactoring** `function getJoke()` using **Fetch API**](#refactoring-function-getjoke-using-fetch-api)
 
-### PART 3: Async/Await, Modules and Web Storage
+### **PART 3:** Async/Await, Modules and Web Storage
 
 **Async/Await:**
 
@@ -56,10 +56,28 @@
 
 **Modules:**
 
-24. [Import a Module into `HTML`](#import-module-into-html)
-25. [Pull `math.js` into `script js`](#pull-mathjs-into-script-js)
-26. [*ERROR*: `Uncaught SyntaxError: ambiguous indirect export: default`](#error-uncaught-syntaxerror-ambiguous-indirect-export-default)
-    - [Correction](#correction)
+24. [**Import a Module** into `HTML`](#import-module-into-html)
+25. [Pull **`math.js`** into **`script js`**](#pull-mathjs-into-script-js)
+26. [***ERROR***: `Uncaught SyntaxError: ambiguous indirect export: default`](#error-uncaught-syntaxerror-ambiguous-indirect-export-default)
+    - [Debug](#correction)
+
+### **PART 4:** Introduction to React
+
+**NPM and Third-Party Packages:**
+
+27. [Installing **Third-Party Packages**](#installing-third-party-packages)
+28. [**NPM: Node Package Manager**](#npm-node-package-manager)
+    - [Sorting Packages](#sorting-packages)
+29. [Using Third-Party Packages ***(command line)***](#using-third-party-packages-command-line)
+30. [**`package.json`**](#packagejson)
+    - [**`package.json**` Code Snippet](#packagejson-code-snippet)
+31. [Using **`main`** parameter in **`package.json`**](#using-main-parameter-in-packagejson--es6-module-syntax)
+    - [**`Scripts`**](#scripts)
+32. [**`package-lock.json`**](#package-lockjson)
+    - [**`package-lock.json`** Dependency Code Snippet](#package-lockjson-dependency-code-snippet)
+33. [**`node_modules` Directory**](#node_modules-directory)
+34. [Adding to **`.gitignore`**](#adding-to-gitignore)
+35. [Using a **Third-Party Package**](#using-a-third-party-package)
 
 ---
 
@@ -717,6 +735,8 @@ export function add(a, b) { // exporting each function individually
 
 ## **PART 4:** Introduction to React
 
+[Back to **Table of Contents** Here!](#table-of-contents)
+
 ## Installing Third-Party Packages
 
 **Python:**
@@ -750,7 +770,7 @@ export function add(a, b) { // exporting each function individually
    - Most recently updated
    - 2 - 3 years max suggested
 
-## Using Third-Party Packages
+## Using Third-Party Packages *(command line)*
 
 1. **Set up Node application:**
 
@@ -761,7 +781,7 @@ npm init -y
 # -y : Assumes 'yes' for all settings
 ```
 
-1. **Install NPM package:**
+2. **Install NPM package:**
 
 Install package:
 
@@ -772,6 +792,8 @@ npm i roll
 # OR
 npm i roll@1.2 # Install specific version
 ```
+
+[Back to **Table of Contents** Here!](#table-of-contents)
 
 ## `package.json`
 
@@ -816,9 +838,7 @@ npm i roll@1.2 # Install specific version
 }
 ```
 
-## ↑ ES6 Module Syntax
-
-### Using `main` parameter in `package.json`
+## Using `main` parameter in `package.json` *(*↑ *ES6 Module Syntax)*
 
 **Module MUST be specified before use:**
 
@@ -849,6 +869,8 @@ npm i roll@1.2 # Install specific version
 12
 Hello world!
 ```
+
+[Back to **Table of Contents** Here!](#table-of-contents)
 
 ## `package-lock.json`
 
@@ -888,3 +910,20 @@ Hello world!
 node_modules
 package-lock.json
 ```
+
+## Using a Third-Party Package
+
+1. Importing Third-Party Package *(Roll)*
+
+```javascript
+import Roll from 'roll'
+```
+
+2. Using a Package
+
+```javascript
+export const roll = new Roll()
+console.log(roll.roll('2d10'))
+```
+
+[Back to **Table of Contents** Here!](#table-of-contents)
