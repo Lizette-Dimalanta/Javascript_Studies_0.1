@@ -1,9 +1,9 @@
 // PART 3:
 // Pull math.js module into script.js
 import { PI, add } from './math.js'
-    // standalone variables
+    // standalone variables (destructured module)
 
-console.log(add(5, 7) * PI)
+console.log(add(5, 7))
  
 
 

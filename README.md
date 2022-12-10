@@ -660,6 +660,8 @@ document.querySelector('ul').innerHTML += oldJokes.map(joke => `<li>${joke}</li>
 loadJokes([]) // Must have empty array for function to work
 ```
 
+[Back to **Table of Contents** Here!](#table-of-contents)
+
 ## Modules
 
 ### Import module into html
@@ -710,3 +712,87 @@ export function add(a, b) { // exporting each function individually
 
 - Even though you can have an implicity import, you MUST explicitly state the export
 - There is no wildcard (`*`) export
+
+---
+
+## **PART 4:** Introduction to React
+
+## Installing Third-Party Packages
+
+**Python:**
+
+- `Pypi` - Third-Party Packages
+- `Pip` - A PyPi Package Manager
+
+**Javascript Equivalent:**
+
+- `Node.js` - Javascript Interpreter
+- `NPM.js` - Node Package Manager
+  - Enter name of package Desired
+  - Will search a central repository -> installs desired package
+
+## NPM: Node Package Manager
+
+[Click Here for **NPM Website**](https://www.npmjs.com/)
+
+- Will **automatically** install any **dependencies** with any packages
+- `def` - **Dependents**: Lists packages that are dependent of selected package
+- **Research**: Ensure you are aware of the **package license permissions**
+
+### Sorting Packages
+
+1. Optimal
+   - ↓ Average general performance of all other measures
+2. Popularity
+   - Generally a good measure
+3. Quality
+4. Maintanence
+   - Most recently updated
+   - 2 - 3 years max suggested
+
+## Using Thid-Party Packages
+
+1. Set up Node application
+
+- `-y` : Assumes `'yes'` for all settings
+- Creates `package.json` file
+
+```bash
+npm init -y 
+```
+
+## `package.json`
+
+`▹ debug` Button *(under line 5)*:
+
+- Inserted by *VScode*
+- Will run `script.js` using `node.js`, in **debug mode**
+- **NOT suggested to use**:
+  - May run it in windows
+  - Others/You may not be using VScode in a professional work environment
+- `Recommended` : Debug through terminal
+
+### `package.json` Code Example
+
+```json
+{
+  "name": "callbacks", 
+  "version": "1.0.0",
+  "description": "Javascript Studies",
+  "main": "script.js", // ← Where should Node.js start?
+  "scripts": { // ↓ Can specify multiple scripts
+    "test": "echo \"Error: no test specified\" && exit 1" // Terminal Commands
+  },
+  "repository": { // GitHub Repository Details (if applicable)
+    "type": "git",
+    "url": "git+https://github.com/Lizette-Dimalanta/JS_async_callbacks.git"
+  },
+  "keywords": [], // What does your package do? → Series of keywords (strings)
+  "author": "", // Author Details
+  "license": "ISC", // Can change the license
+  "bugs": { // Bugs URL → Open support ticket (GitHub Issues Tab)
+    "url": "https://github.com/Lizette-Dimalanta/JS_async_callbacks/issues"
+  },
+  "homepage": "https://github.com/Lizette-Dimalanta/JS_async_callbacks#readme" // Webpage for Application (if applicable)
+}
+```
